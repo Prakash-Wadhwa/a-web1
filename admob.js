@@ -21,7 +21,7 @@
           adSize: 'BANNER',
           position: 'BOTTOM_CENTER',
           margin: 0,
-          isTesting: true // Set to true to ensure test ads are forced on registered devices
+          isTesting: false // Strictly false to serve real ads to all users
         });
         console.log("Banner shown successfully");
       } catch (e) {
