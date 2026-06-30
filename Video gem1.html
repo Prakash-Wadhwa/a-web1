@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wadhwa Sir Classroom - Official 2026 Launch</title>
+    <!-- Import High-End Cinematic Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,500;0,800;1,900&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #040814;
+            --primary-glow: #ff5e00;
+            --secondary-glow: #00f2fe;
+            --text-main: #ffffff;
+            --text-muted: #8fa0c4;
+            --border-glow: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            overflow: hidden;
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Launcher Dashboard Screen */
+        #launch-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #0c1530 0%, #000000 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .launch-btn {
+            background: linear-gradient(135deg, var(--primary-glow), #ff9100);
+            border: none;
+            color: white;
+            padding: 20px 45px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 94, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .launch-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(255, 94, 0, 0.7);
+        }
+
+        .launch-instructions {
+            color: var(--text-muted);
+            margin-top: 15px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* Main Video Canvas Wrapper */
+        #video-container {
+            position: relative;
+            height: 95vh;
+            aspect-ratio: 9 / 16;
+            background-color: var(--bg-color);
+            border: 3px dashed rgba(255, 255, 255, 0.3); /* Target cropping line */
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0; /* Starts pitch black */
+        }
+
+        /* 9:16 Inner Recording Frame with precise alignment indicators */
+        .instagram-safe-frame {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Master Animation Slides Configuration */
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: scale(1.03);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 50px 30px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Abstract Premium Background elements */
+        .gradient-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(4,8,20,0.8) 0%, rgba(4,8,20,0.4) 40%, rgba(4,8,20,0.95) 100%);
+            z-index: 1;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Typography Styles */
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .epic-title {
+            font-size: 2.2rem;
+            line-height: 1.1;
+            color: var(--text-main);
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
+            margin-bottom: 10px;
+        }
+
+        .glow-orange {
+            color: var(--primary-glow);
+            text-shadow: 0 0 20px rgba(255, 94, 0, 0.5);
+        }
+
+        .glow-cyan {
+            color: var(--secondary-glow);
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+        }
+
+        /* Floating App Images Styling */
+        .image-showcase {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            perspective: 1000px;
+        }
+
+        .mockup-img {
+            width: 85%;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 30px rgba(255,94,0,0.2);
+            transform: rotateX(5deg) rotateY(-5deg);
+            transition: transform 0.5s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Dynamic Grid Layouts */
+        .grid-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .grid-img {
+            width: 100%;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* Feature Badge Layouts */
+        .badge-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .premium-badge {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-left: 4px solid var(--primary-glow);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-right: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 14px 20px;
+            border-radius: 0 16px 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .badge-cyan {
+            border-left-color: var(--secondary-glow);
+        }
+
+        .badge-text-main {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .badge-text-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        /* Header / Footer Cinematic Elements */
+        .slide-header {
+            text-align: center;
+        }
+        
+        .tagline {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--secondary-glow);
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .slide-footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* Special Styling for Closing Slide Statement */
+        .community-card {
+            background: linear-gradient(180deg, rgba(255,94,0,0.1) 0%, rgba(0,0,0,0) 100%);
+            border: 1px solid rgba(255, 94, 0, 0.2);
+            border-radius: 24px;
+            padding: 25px;
+            text-align: center;
+            margin: auto 0;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .statement-text {
+            font-size: 1.15rem;
+            line-height: 1.5;
+            color: #ffffff;
+            font-weight: 500;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        /* Progress Bar Indicator at bottom of screen */
+        .timeline-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-glow), var(--secondary-glow));
+            width: 0%;
+            z-index: 1010;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Start Dashboard Overlay Trigger -->
+    <div id="launch-overlay">
+        <button class="launch-btn" onclick="startCinematicPresentation()">Start Presentation</button>
+        <p class="launch-instructions">Enters Fullscreen Mode automatically</p>
+    </div>
+
+    <!-- Main Video Frame Context -->
+    <div id="video-container">
+        <div class="instagram-safe-frame"></div>
+        <div class="timeline-progress" id="progress-bar"></div>
+
+        <!-- SLIDE 1: INTRODUCING BRAND EXCELLENCE (1s - 5.5s) -->
+        <div class="slide" id="slide1" style="background-image: url('89568.jpg');">
+            <div class="gradient-overlay"></div>
+            <div class="slide-content">
+                <div class="slide-header">
+                    <p class="tagline">The Evolution of Learning</p>
+                    <h2 class="epic-title">Wadhwa Sir<br><span class="glow-orange">Classroom</span></h2>
+                </div>
+                
+                <div class="image-showcase">
+                    <img src="89568.jpg" class="mockup-img" alt="Splash Mockup">
+                </div>
+
+                <div class="slide-footer">
+                    <p style="font-weight:700; color:#fff;">Prof. Prakash Wadhwa</p>
+                    <p style="font-size:0.75rem; text-transform:uppercase; letter-spacing:2px; margin-top:3px;">Gold Medalist • 22 Years of Pure Excellence</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: COMPLETE PRIVACY & ABSOLUTE FREEDOM (5.5s - 10s) -->
+        <div class="slide" id="slide2" style="background-image: url('89603.jpg');">
+            <div class="gradient-overlay"></div>
+            <div class="slide-content">
+                <div class="slide-header">
+                    <p class="tagline">Zero Friction. Total Freedom.</p>
+                    <h2 class="epic-title">100% Free<br><span class="glow-cyan">No Boundaries</span></h2>
+                </div>
+
+                <div class="badge-container">
+                    <div class="premium-badge">
+                        <div>
+                            <div class="badge-text-main">No Credentials Required</div>
+                            <div class="badge-text-sub">No Logins • No Passwords</div>
+                        </div>
+                    </div>
+                    <div class="premium-badge badge-cyan">
+                        <div>
+                            <div class="badge-text-main">Absolute Privacy Control</div>
+                            <div class="badge-text-sub">No Numbers • No Gmail Verified</div>
+                        </div>
+                    </div>
+                    <div class="premium-badge">
+                        <div>
+                            <div class="badge-text-main">Guaranteed Data Safety</div>
+                            <div class="badge-text-sub">Zero Data Collection Architecture</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <p>Live on Google Play Store Now</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: UNIFIED STREAMS GRID (10s - 15s) -->
+        <div class="slide" id="slide3" style="background-image: url('89596.jpg');">
+            <div class="gradient-overlay"></div>
+            <div class="slide-content">
+                <div class="slide-header">
+                    <p class="tagline">All Major Streams Included</p>
+                    <h2 class="epic-title">Master<br><span class="glow-orange">Curriculums</span></h2>
+                </div>
+
+                <div class="grid-showcase">
+                    <img src="89597.jpg" class="grid-img" alt="Science Stream">
+                    <img src="89598.jpg" class="grid-img" alt="Commerce Stream">
+                    <img src="89596.jpg" class="grid-img" alt="Dashboard Hub">
+                    <img src="89599.jpg" class="grid-img" alt="Arts Stream">
+                </div>
+
+                <div class="slide-footer">
+                    <p style="color:#fff; font-weight:700; font-size:0.8rem;">11th, 12th, MHT-CET, JEE, NEET, CA, CMA</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: FUTURE CONTEXT LEARNING (15s - 19.5s) -->
+        <div class="slide" id="slide4" style="background-image: url('89568.jpg');">
+            <div class="gradient-overlay"></div>
+            <div class="slide-content">
+                <div class="slide-header">
+                    <p class="tagline">Next-Gen Tech Architecture</p>
+                    <h2 class="epic-title" style="font-size:1.9rem;">Interactive<br><span class="glow-cyan">Voice Learning</span></h2>
+                </div>
+
+                <div class="badge-container" style="margin-top:auto; margin-bottom:auto;">
+                    <div class="premium-badge badge-cyan">
+                        <div>
+                            <div class="badge-text-main">Step-by-Step Audio Explanations</div>
+                            <div class="badge-text-sub">Every complex equation resolved</div>
+                        </div>
+                    </div>
+                    <div class="premium-badge">
+                        <div>
+                            <div class="badge-text-main">Engineered by Ultimate Elites</div>
+                            <div class="badge-text-sub">Top Teachers, Engineers & Management experts</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <p>Designed for Ultimate Concept Clarity</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: STRATEGIC COMMUNITY ACTION (19.5s - 24s) -->
+        <div class="slide" id="slide5" style="background-color: #040814;">
+            <div class="slide-content" style="justify-content: center;">
+                <div class="slide-header" style="margin-bottom: 30px;">
+                    <p class="tagline">Join The Global Mission</p>
+                    <h2 class="epic-title" style="font-size: 1.8rem;">Support Our<br><span class="glow-orange">Student Community</span></h2>
+                </div>
+
+                <div class="community-card">
+                    <p class="statement-text">
+                        Empower the global student community by downloading this specialized educational application on your device, and share it across your friends and family network. Your proactive installation helps our development division seamlessly monitor, test, and validate runtime optimization to ensure a completely flawless, premium, and bug-free learning system for everyone.
+                    </p>
+                </div>
+
+                <div class="slide-footer" style="margin-top: 40px;">
+                    <p style="text-transform: uppercase; font-weight: 700; color: var(--secondary-glow); letter-spacing: 2px;">Wadhwa Sir Classroom • 2026</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Cinematic Ambient Audio Synth System using Web Audio API (Guarantees zero link breaking offline)
+        let audioCtx = null;
+        let masterGain = null;
+
+        function initializeCinematicAudio() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+                masterGain = audioCtx.createGain();
+                masterGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+                masterGain.connect(audioCtx.destination);
+
+                // Professional ambient progression generator
+                playSynthPad(440, 0, 6);     // A minor chord notes base
+                playSynthPad(523.25, 0, 6);
+                playSynthPad(659.25, 1, 5);
+
+                playSynthPad(349.23, 5.5, 5);  // F major chord progression
+                playSynthPad(523.25, 5.5, 5);
+                playSynthPad(698.46, 6.5, 4);
+
+                playSynthPad(261.63, 10, 6);   // C major shift
+                playSynthPad(392.00, 10, 6);
+                playSynthPad(523.25, 11, 5);
+
+                playSynthPad(392.00, 15, 5);   // G major progression accent
+                playSynthPad(587.33, 15, 5);
+                playSynthPad(493.88, 16, 4);
+
+                playSynthPad(440, 19.5, 5.5);  // Resolved dramatic ending chord
+                playSynthPad(523.25, 19.5, 5.5);
+                playSynthPad(659.25, 20.5, 4.5);
+
+                // Add deep cinematic heartbeat bass rhythmic pulse
+                for (let time = 1; time < 24; time += 1.5) {
+                    playDeepKickPulse(time);
+                }
+
+                // Global smooth volume master ramp up
+                masterGain.gain.exponentialRampToValueAtTime(0.25, audioCtx.currentTime + 2);
+                // Clean dramatic system fade out right before 25 seconds marker
+                masterGain.gain.setValueAtTime(0.25, audioCtx.currentTime + 23.5);
+                masterGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 24.8);
+            } catch (e) {
+                console.warn("Audio Context setup skipped or unsupported: ", e);
+            }
+        }
+
+        function playSynthPad(frequency, startTime, duration) {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(frequency, audioCtx.currentTime + startTime);
+            
+            gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime + startTime);
+            gainNode.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + startTime + 1.5);
+            gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime + startTime + duration - 1);
+            gainNode.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + startTime + duration);
+            
+            osc.connect(gainNode);
+            gainNode.connect(masterGain);
+            osc.start(audioCtx.currentTime + startTime);
+            osc.stop(audioCtx.currentTime + startTime + duration);
+        }
+
+        function playDeepKickPulse(startTime) {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(65, audioCtx.currentTime + startTime);
+            osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + startTime + 0.4);
+
+            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime + startTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + startTime + 0.4);
+
+            osc.connect(gainNode);
+            gainNode.connect(masterGain);
+            osc.start(audioCtx.currentTime + startTime);
+            osc.stop(audioCtx.currentTime + startTime + 0.45);
+        }
+
+        // Sequential Visual Progression Scripting 
+        function startCinematicPresentation() {
+            // Remove Control Launcher Button interface 
+            const overlay = document.getElementById('launch-overlay');
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.remove(), 800);
+
+            // Execute Immediate Browser Request Fullscreen Mode
+            const docElm = document.documentElement;
+            if (docElm.requestFullscreen) { docElm.requestFullscreen(); }
+            else if (docElm.webkitRequestFullscreen) { docElm.webkitRequestFullscreen(); }
+            else if (docElm.msRequestFullscreen) { docElm.msRequestFullscreen(); }
+
+            // Initialize Background Audio Matrix Node
+            initializeCinematicAudio();
+
+            const canvas = document.getElementById('video-container');
+            const progressBar = document.getElementById('progress-bar');
+            
+            // Absolute 1 Second pure black state pause requirement before display setup
+            setTimeout(() => {
+                canvas.style.opacity = '1';
+                canvas.style.transition = 'opacity 0.5s ease';
+                
+                // Initialize Visual Flow Run Timers
+                executeSlideSequence();
+            }, 1000);
+
+            // Trigger frame progress bar synchronization across 24 seconds active window
+            progressBar.style.transition = 'width 24s linear';
+            setTimeout(() => {
+                progressBar.style.width = '100%';
+            }, 1000);
+        }
+
+        function executeSlideSequence() {
+            const slides = [
+                { id: 'slide1', start: 0, end: 4500 },     // 1s to 5.5s marks
+                { id: 'slide2', start: 4500, end: 9000 },   // 5.5s to 10s marks
+                { id: 'slide3', start: 9000, end: 14000 },  // 10s to 15s marks
+                { id: 'slide4', start: 14000, end: 18500 }, // 15s to 19.5s marks
+                { id: 'slide5', start: 18500, end: 23000 }  // 19.5s to 24s marks
+            ];
+
+            slides.forEach(slideInfo => {
+                // Fade slide entry triggers
+                setTimeout(() => {
+                    document.getElementById(slideInfo.id).classList.add('active');
+                }, slideInfo.start);
+
+                // Fade slide exit triggers
+                setTimeout(() => {
+                    document.getElementById(slideInfo.id).classList.remove('active');
+                }, slideInfo.end);
+            });
+
+            // Ultimate 24th second master container black fade-out execution rule
+            setTimeout(() => {
+                document.getElementById('video-container').style.transition = 'opacity 0.8s ease';
+                document.getElementById('video-container').style.opacity = '0';
+            }, 23000);
+        }
+    </script>
+</body>
+</html>
